@@ -1,16 +1,16 @@
 # Find Aura - AI Image Profiler
 
-A minimalist Vue.js 3 application that analyzes images and generates prescriptive XML style profiles using Google's Gemini Pro Vision API.
+A minimalist Vue.js 3 application that analyzes images and generates prescriptive XML style profiles using AI analysis.
 
 ## Features
 
 - **Image Upload**: Drag and drop or click to upload multiple images (JPG, PNG, WEBP, GIF)
-- **AI Analysis**: Uses Google Gemini Pro Vision API to analyze visual aesthetics
+- **AI Analysis**: Uses AI to analyze visual aesthetics and generate style profiles
 - **XML Generation**: Creates detailed, prescriptive XML profiles for recreating image styles
 - **Syntax Highlighting**: Beautiful XML display with syntax highlighting
 - **Copy to Clipboard**: Easy copying of generated XML profiles
 - **Responsive Design**: Works on desktop and mobile devices
-- **Dark Theme**: Modern, minimalist dark interface
+- **Clean UI**: Modern, minimalist white interface
 
 ## Technology Stack
 
@@ -22,7 +22,7 @@ A minimalist Vue.js 3 application that analyzes images and generates prescriptiv
 - **Notifications**: vue-sonner
 - **Icons**: Lucide Vue Next
 - **Backend**: Vercel Serverless Functions
-- **AI**: Google Gemini Pro Vision API
+- **AI**: AI-powered image analysis
 
 ## Getting Started
 
@@ -30,7 +30,6 @@ A minimalist Vue.js 3 application that analyzes images and generates prescriptiv
 
 - Node.js 18+ 
 - npm or yarn
-- Google Generative AI API key
 
 ### Installation
 
@@ -45,14 +44,9 @@ cd find-aura
 npm install
 ```
 
-3. Set up environment variables:
+3. Set up environment variables (if needed):
 ```bash
 cp env.example .env.local
-```
-
-4. Add your Google Generative AI API key to `.env.local`:
-```
-GOOGLE_GENERATIVE_AI_API_KEY=your_api_key_here
 ```
 
 ### Development
@@ -88,11 +82,6 @@ Preview the production build:
 npm run preview
 ```
 
-## API Key Setup
-
-1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Create a new API key
-3. Add the key to your `.env.local` file
 
 ## Project Structure
 
@@ -100,8 +89,10 @@ npm run preview
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # Base UI components (Button, Badge, etc.)
-│   ├── FileUpload.vue  # File upload component
-│   └── AnalysisDrawer.vue # XML display drawer
+│   ├── forms/          # Form components
+│   │   └── FileUpload.vue  # File upload component
+│   └── layout/         # Layout components
+│       └── AnalysisDrawer.vue # XML display drawer
 ├── views/              # Page components
 │   └── HomeView.vue    # Main application view
 ├── lib/                # Utility functions and constants

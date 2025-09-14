@@ -27,9 +27,9 @@ const currentYear = computed(() => new Date().getFullYear())
               {{ title }}
             </h1>
           </div>
-          <p class="text-muted-foreground text-xl sm:text-2xl max-w-3xl mx-auto text-balance text-spacing console-text text-black">
-            {{ description }}
-          </p>
+            <!-- <p class="text-muted-foreground text-xl sm:text-2xl max-w-3xl mx-auto text-balance text-spacing console-text text-black">
+              {{ description }}
+            </p> -->
         </slot>
       </header>
 
@@ -42,7 +42,7 @@ const currentYear = computed(() => new Date().getFullYear())
       <footer v-if="showFooter" class="text-center mt-16 sm:mt-20">
         <slot name="footer">
           <p class="text-sm text-muted-foreground text-spacing console-text">
-            Powered by Google Gemini • Built with Vue & shadcn/ui & Vercel
+            Powered by Google Gemini • Built with Vue & shadcn/ui & Vercel •  Built by Saksham Gorey
           </p>
         </slot>
       </footer>

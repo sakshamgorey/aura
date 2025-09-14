@@ -104,23 +104,42 @@
   }
 }
 
-/* Custom scrollbar styles for the XML viewer */
+/* Custom scrollbar styles for the XML viewer - Light theme */
 .xml-viewer::-webkit-scrollbar {
   width: 8px;
 }
 
 .xml-viewer::-webkit-scrollbar-track {
-  background: #27272a;
+  background: #f3f4f6;
   border-radius: 4px;
 }
 
 .xml-viewer::-webkit-scrollbar-thumb {
-  background: #52525b;
+  background: #d1d5db;
   border-radius: 4px;
 }
 
 .xml-viewer::-webkit-scrollbar-thumb:hover {
-  background: #71717a;
+  background: #9ca3af;
+}
+
+/* Light theme scrollbar for pre elements */
+pre::-webkit-scrollbar {
+  width: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
 
 /* Smooth transitions for interactive elements */
@@ -397,4 +416,17 @@
 
 .white-upload-card:hover {
   @apply border-primary/50;
+}
+
+/* XML Content Display Styling */
+.xml-content-display {
+  @apply bg-gray-50 border border-gray-200 rounded-xl;
+}
+
+.xml-content-display pre {
+  @apply bg-transparent;
+}
+
+.xml-content-display code {
+  @apply text-gray-800;
 }

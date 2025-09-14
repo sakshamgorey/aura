@@ -43,9 +43,9 @@ const highlightedXml = computed(() => {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/(&lt;\/?)(\w+)(.*?)(\/?&gt;)/g, (match, p1, p2, p3, p4) => {
-      // Highlight attributes
-      const attributes = p3.replace(/(\w+)=(".*?")/g, '<span class="text-green-400">$1</span>=<span class="text-amber-400">$2</span>')
-      return `<span class="text-zinc-500">${p1}</span><span class="text-sky-400">${p2}</span>${attributes}<span class="text-zinc-500">${p4}</span>`
+      // Highlight attributes with light theme colors
+      const attributes = p3.replace(/(\w+)=(".*?")/g, '<span class="text-green-600">$1</span>=<span class="text-amber-600">$2</span>')
+      return `<span class="text-gray-500">${p1}</span><span class="text-blue-600">${p2}</span>${attributes}<span class="text-gray-500">${p4}</span>`
     })
 })
 
@@ -91,10 +91,10 @@ const copyXml = async () => {
         </DrawerHeader>
         
         <!-- XML Content Display -->
-        <div class="flex-grow overflow-hidden rounded-xl border bg-muted/50">
+        <div class="flex-grow overflow-hidden xml-content-display">
           <pre class="h-full overflow-auto p-4 sm:p-6 text-sm sm:text-base">
             <code 
-              class="font-mono whitespace-pre-wrap text-foreground text-spacing" 
+              class="font-mono whitespace-pre-wrap text-spacing" 
               v-html="highlightedXml"
             ></code>
           </pre>
