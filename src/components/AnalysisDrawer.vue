@@ -9,7 +9,8 @@ import {
   DrawerTrigger,
   DrawerFooter,
   DrawerClose,
-  Button
+  Button,
+  ScrollArea
 } from '@/components/ui'
 import { toast } from 'vue-sonner'
 import { ClipboardCopy } from 'lucide-vue-next'
@@ -33,7 +34,7 @@ watch(isDrawerOpen, (newVal) => {
 })
 
 /**
- * Applies syntax highlighting to XML content
+ * Applies syntax highlighting to XML content with terminal colors
  */
 const highlightedXml = computed(() => {
   if (!props.xmlResult) return ''
@@ -43,9 +44,9 @@ const highlightedXml = computed(() => {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/(&lt;\/?)(\w+)(.*?)(\/?&gt;)/g, (match, p1, p2, p3, p4) => {
-      // Highlight attributes
-      const attributes = p3.replace(/(\w+)=(".*?")/g, '<span class="text-green-400">$1</span>=<span class="text-amber-400">$2</span>')
-      return `<span class="text-zinc-500">${p1}</span><span class="text-sky-400">${p2}</span>${attributes}<span class="text-zinc-500">${p4}</span>`
+      // Highlight attributes with terminal colors
+      const attributes = p3.replace(/(\w+)=(".*?")/g, '<span class="text-terminal-accent">$1</span>=<span class="text-terminal-warning">$2</span>')
+      return `<span class="text-gray-500">${p1}</span><span class="text-blue-600">${p2}</span>${attributes}<span class="text-gray-500">${p4}</span>`
     })
 })
 
@@ -74,41 +75,58 @@ const copyXml = async () => {
 <template>
   <Drawer v-model:open="isDrawerOpen">
     <DrawerTrigger as-child>
-      <Button variant="outline" class="w-full sm:w-auto">
+      <Button variant="outline" class="w-full sm:w-auto bg-white text-black border-gray-300 hover:bg-gray-50 font-mono">
         View Generated Profile
       </Button>
     </DrawerTrigger>
     
-    <DrawerContent class="h-[85vh]">
-      <div class="p-4 h-full flex flex-col max-w-4xl mx-auto w-full">
+    <DrawerContent class="h-[85vh] bg-white border-gray-300">
+      <!-- Terminal Title Bar -->
+      <div class="bg-gray-100 border-b border-gray-300 flex items-center px-4 py-2">
+        <div class="flex space-x-2 mr-4">
+          <div class="w-3 h-3 rounded-full bg-red-500" />
+          <div class="w-3 h-3 rounded-full bg-yellow-500" />
+          <div class="w-3 h-3 rounded-full bg-green-500" />
+        </div>
+        <div class="text-gray-600 text-sm font-mono">
+          aura@localhost:~/analysis
+        </div>
+      </div>
+
+      <div class="p-4 h-full flex flex-col max-w-4xl mx-auto w-full bg-white">
         <DrawerHeader class="text-left">
-          <DrawerTitle class="text-2xl">
+          <DrawerTitle class="text-2xl text-black font-mono">
             Visual Style Profile
           </DrawerTitle>
-          <DrawerDescription>
+          <DrawerDescription class="text-gray-600 font-mono">
             A prescriptive XML recipe for recreating this image's aesthetic.
           </DrawerDescription>
         </DrawerHeader>
         
         <!-- XML Content Display -->
-        <div class="flex-grow my-4 overflow-hidden rounded-lg border">
-          <pre class="bg-muted h-full overflow-auto p-4 sm:p-6 text-sm">
-            <code 
-              class="font-mono whitespace-pre-wrap" 
-              v-html="highlightedXml"
-            ></code>
-          </pre>
+        <div class="flex-grow my-4 overflow-hidden rounded-lg border border-gray-300 bg-white">
+          <ScrollArea class="h-full">
+            <pre class="bg-white p-4 sm:p-6 text-sm text-black">
+              <code 
+                class="font-mono whitespace-pre-wrap" 
+                v-html="highlightedXml"
+              ></code>
+            </pre>
+          </ScrollArea>
         </div>
         
         <!-- Footer Actions -->
-        <DrawerFooter>
+        <DrawerFooter class="bg-white">
           <div class="flex flex-col sm:flex-row gap-4">
-            <Button @click="copyXml" class="w-full">
+            <Button 
+              @click="copyXml" 
+              class="w-full bg-black text-white hover:bg-gray-800 border border-gray-300 font-mono"
+            >
               <ClipboardCopy class="h-4 w-4 mr-2"/>
-              {{ copied ? 'Copied!' : 'Copy XML to Clipboard' }}
+              {{ copied ? 'Copied!' : 'cp analysis.xml' }}
             </Button>
             <DrawerClose as-child>
-              <Button variant="outline" class="w-full">
+              <Button variant="outline" class="w-full bg-white text-black border-gray-300 hover:bg-gray-50 font-mono">
                 Close
               </Button>
             </DrawerClose>

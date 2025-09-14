@@ -48,6 +48,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        // Terminal specific colors
+        terminal: {
+          bg: "#ffffff",
+          text: "#000000",
+          accent: "#008000",
+          warning: "#ffaa00",
+          error: "#ff0000",
+          border: "#cccccc",
+          shadow: "rgba(0, 0, 0, 0.1)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -55,7 +65,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
+        sans: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
       },
       keyframes: {
         "accordion-down": {
@@ -66,10 +77,33 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "terminal-blink": {
+          "0%, 50%": { opacity: "1" },
+          "51%, 100%": { opacity: "0" },
+        },
+        "terminal-glow": {
+          "0%": { 
+            textShadow: "0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor" 
+          },
+          "100%": { 
+            textShadow: "0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor" 
+          },
+        },
+        "terminal-type": {
+          "0%": { width: "0" },
+          "100%": { width: "100%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "terminal-blink": "terminal-blink 1s infinite",
+        "terminal-glow": "terminal-glow 2s ease-in-out infinite alternate",
+        "terminal-type": "terminal-type 2s ease-in-out",
+      },
+      boxShadow: {
+        'terminal': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        'terminal-lg': '0 35px 60px -12px rgba(0, 0, 0, 0.3)',
       },
     },
   },

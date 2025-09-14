@@ -18,3 +18,14 @@ export { default as DrawerTrigger } from './drawer/DrawerTrigger.vue'
 export { default as DrawerClose } from './drawer/DrawerClose.vue'
 export { default as DrawerOverlay } from './drawer/DrawerOverlay.vue'
 export { default as DrawerPortal } from './drawer/DrawerPortal.vue'
+
+// Sheet components
+export { default as Sheet } from './sheet/Sheet.vue'
+export { default as SheetContent } from './sheet/SheetContent.vue'
+export { default as SheetDescription } from './sheet/SheetDescription.vue'
+export { default as SheetHeader } from './sheet/SheetHeader.vue'
+export { default as SheetTitle } from './sheet/SheetTitle.vue'
+export { default as SheetTrigger } from './sheet/SheetTrigger.vue'
+
+// Scroll Area components
+export { default as ScrollArea } from './scroll-area/ScrollArea.vue'

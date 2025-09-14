@@ -4,6 +4,7 @@ import { toast } from 'vue-sonner'
 import { Loader2, Wand2 } from 'lucide-vue-next'
 import FileUpload from '@/components/FileUpload.vue'
 import AnalysisDrawer from '@/components/AnalysisDrawer.vue'
+import TerminalWindow from '@/components/TerminalWindow.vue'
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
 import { APP_CONFIG, ERROR_MESSAGES, SUCCESS_MESSAGES, UI_TEXT } from '@/lib/constants'
 
@@ -67,38 +68,57 @@ const handleAnalyze = async () => {
 </script>
 
 <template>
-  <Card class="w-full max-w-2xl mx-auto">
-    <CardHeader class="text-center space-y-3">
-      <Wand2 class="mx-auto h-10 w-10 text-primary" />
-      <CardTitle class="text-3xl font-bold tracking-tight">{{ UI_TEXT.APP_TITLE }}</CardTitle>
-      <CardDescription class="max-w-md mx-auto">
-        {{ UI_TEXT.APP_DESCRIPTION }}
-      </CardDescription>
-    </CardHeader>
+  <div class="min-h-screen bg-black text-white font-mono p-4">
+    <div class="max-w-6xl mx-auto">
+      <TerminalWindow title="aura@localhost:~/writing-profiler">
+        <div class="space-y-8">
+          <!-- Terminal Header -->
+          <div class="text-center space-y-4">
+            <div class="flex items-center justify-center space-x-2">
+              <Wand2 class="h-8 w-8 text-white" />
+              <h1 class="text-4xl font-bold text-white animate-terminal-glow">
+                {{ UI_TEXT.APP_TITLE }}
+              </h1>
+            </div>
+            <p class="text-gray-300 max-w-2xl mx-auto leading-relaxed">
+              {{ UI_TEXT.APP_DESCRIPTION }}
+            </p>
+          </div>
 
-    <CardContent class="space-y-8">
-      <!-- File Upload Section -->
-      <FileUpload @files-changed="handleFilesChanged" />
+          <!-- Command Line Interface -->
+          <div class="space-y-6">
+            <!-- Command Prompt -->
+            <div class="text-white text-lg">
+              <span class="text-terminal-accent">$</span> upload_files
+            </div>
 
-      <!-- Action Section -->
-      <div class="flex flex-col items-center gap-4">
-        <Button 
-          @click="handleAnalyze" 
-          :disabled="isLoading || files.length === 0" 
-          size="lg" 
-          class="w-full sm:w-auto text-base px-10 py-6"
-        >
-          <Loader2 v-if="isLoading" class="mr-2 h-5 w-5 animate-spin" />
-          {{ isLoading ? UI_TEXT.ANALYZING : UI_TEXT.GENERATE_PROFILE }}
-        </Button>
+            <!-- File Upload Section -->
+            <FileUpload @files-changed="handleFilesChanged" />
 
-        <!-- Analysis Results Drawer -->
-        <AnalysisDrawer 
-          v-if="analysisResult" 
-          v-model:open="isDrawerOpen" 
-          :xml-result="analysisResult" 
-        />
-      </div>
-    </CardContent>
-  </Card>
+            <!-- Execute Button -->
+            <div class="text-center">
+              <Button 
+                @click="handleAnalyze" 
+                :disabled="isLoading || files.length === 0" 
+                size="lg" 
+                class="bg-black text-white hover:bg-gray-800 border border-gray-300 font-mono text-base px-8 py-4 transition-all duration-200 hover:shadow-lg"
+              >
+                <Loader2 v-if="isLoading" class="mr-2 h-5 w-5 animate-spin" />
+                {{ isLoading ? UI_TEXT.ANALYZING : './analyze --execute' }}
+              </Button>
+            </div>
+
+            <!-- Analysis Results Drawer -->
+            <div class="text-center">
+              <AnalysisDrawer 
+                v-if="analysisResult" 
+                v-model:open="isDrawerOpen" 
+                :xml-result="analysisResult" 
+              />
+            </div>
+          </div>
+        </div>
+      </TerminalWindow>
+    </div>
+  </div>
 </template>
