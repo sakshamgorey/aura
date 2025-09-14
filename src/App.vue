@@ -4,7 +4,7 @@ import { Toaster } from 'vue-sonner'
 </script>
 
 <template>
-  <div class="min-h-screen bg-background text-foreground font-sans antialiased flex items-center justify-center p-4">
+  <div class="min-h-screen bg-white text-foreground font-sans antialiased flex items-center justify-center p-4" style="background-color: #ffffff !important;">
     <HomeView />
     <Toaster position="top-right" richColors />
   </div>

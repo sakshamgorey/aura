@@ -81,34 +81,34 @@ const copyXml = async () => {
     
     <DrawerContent class="h-[90vh] sm:h-[85vh]">
       <div class="minimal-container h-full flex flex-col">
-        <DrawerHeader class="text-center pb-4">
-          <DrawerTitle class="text-xl sm:text-2xl">
+        <DrawerHeader class="text-center pb-6">
+          <DrawerTitle class="text-2xl sm:text-3xl font-semibold text-spacing-tight console-heading">
             Visual Style Profile
           </DrawerTitle>
-          <DrawerDescription class="text-sm sm:text-base">
+          <DrawerDescription class="text-base sm:text-lg text-spacing mt-3 console-text">
             A prescriptive XML recipe for recreating this image's aesthetic.
           </DrawerDescription>
         </DrawerHeader>
         
         <!-- XML Content Display -->
-        <div class="flex-grow overflow-hidden rounded-lg border bg-muted/50">
-          <pre class="h-full overflow-auto p-3 sm:p-4 text-xs sm:text-sm">
+        <div class="flex-grow overflow-hidden rounded-xl border bg-muted/50">
+          <pre class="h-full overflow-auto p-4 sm:p-6 text-sm sm:text-base">
             <code 
-              class="font-mono whitespace-pre-wrap text-foreground" 
+              class="font-mono whitespace-pre-wrap text-foreground text-spacing" 
               v-html="highlightedXml"
             ></code>
           </pre>
         </div>
         
         <!-- Footer Actions -->
-        <DrawerFooter class="pt-4">
-          <div class="flex flex-col sm:flex-row gap-3">
-            <Button @click="copyXml" class="w-full focus-ring">
+        <DrawerFooter class="pt-6">
+          <div class="flex flex-col sm:flex-row gap-4">
+            <Button @click="copyXml" class="w-full h-11 text-base font-medium focus-ring">
               <ClipboardCopy class="h-4 w-4 mr-2"/>
               {{ copied ? 'Copied!' : 'Copy XML to Clipboard' }}
             </Button>
             <DrawerClose as-child>
-              <Button variant="outline" class="w-full focus-ring">
+              <Button variant="outline" class="w-full h-11 text-base font-medium focus-ring">
                 Close
               </Button>
             </DrawerClose>

@@ -75,11 +75,11 @@ const formatFileSize = (bytes: number): string => {
 </script>
 
 <template>
-  <div class="space-y-6">
+  <div class="space-y-8">
     <!-- Upload Area -->
     <Card 
       @click="openFileDialog" 
-      class="white-upload-card border-2 border-dashed border-gray-300 p-6 sm:p-8 text-center cursor-pointer hover:border-primary/50 transition-all duration-200 group focus-ring"
+      class="bg-white border-2 border-dashed border-border/50 p-8 sm:p-12 text-center cursor-pointer hover:border-primary/50 transition-all duration-200 group focus-ring rounded-xl"
       tabindex="0"
       @keydown.enter="openFileDialog"
       @keydown.space="openFileDialog"
@@ -93,16 +93,16 @@ const formatFileSize = (bytes: number): string => {
           @change="handleFileChange" 
           class="hidden" 
         />
-        <div class="flex flex-col items-center space-y-4">
-          <div class="p-4 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-            <UploadCloud class="h-8 w-8 sm:h-10 sm:w-10 text-primary" />
+        <div class="flex flex-col items-center space-y-6">
+          <div class="p-6 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors ring-1 ring-primary/20">
+            <UploadCloud class="h-12 w-12 sm:h-14 sm:w-14 text-primary" />
           </div>
-          <div class="space-y-2">
-            <p class="text-base sm:text-lg font-medium console-text">
-              <span class="text-primary console-accent">Click to upload</span> <span class="text-gray-600">or drag and drop</span>
+          <div class="space-y-3">
+            <p class="text-lg sm:text-xl font-semibold text-spacing-tight console-text">
+              <span class="text-primary console-accent">Click to upload</span> or drag and drop
             </p>
-            <p class="text-sm text-gray-500 console-text">
-              JPG, PNG, WEBP, or GIF (max 10MB each)
+            <p class="text-sm sm:text-base text-muted-foreground text-spacing console-text">
+              JPG, PNG, WEBP, or GIF (max 15MB each)
             </p>
           </div>
         </div>
@@ -110,26 +110,26 @@ const formatFileSize = (bytes: number): string => {
     </Card>
 
     <!-- Selected Files List -->
-    <div v-if="files.length > 0" class="space-y-4">
+    <div v-if="files.length > 0" class="space-y-6 ">
       <div class="flex items-center justify-between">
-        <h4 class="text-sm font-medium text-gray-700 console-text">Selected Images</h4>
-        <Badge variant="secondary" class="text-xs bg-primary/10 text-primary border-primary/20">
+        <h4 class="text-base font-semibold text-foreground console-text">Selected Images</h4>
+        <Badge variant="secondary" class="text-sm px-3 py-1">
           {{ files.length }} file{{ files.length > 1 ? 's' : '' }}
         </Badge>
       </div>
       
-      <div class="grid gap-3">
+      <div class="grid gap-4 bg-white">
         <div 
           v-for="(file, index) in files" 
           :key="index" 
-          class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 transition-colors shadow-sm"
+          class="flex items-center gap-4 p-4 rounded-xl border bg-white hover:bg-gray-100 transition-colors"
         >
-          <div class="p-2 rounded-md bg-primary/10">
-            <FileImage class="h-4 w-4 text-primary" />
+          <div class="p-3 rounded-lg  ring-1 ring-primary/20">
+            <FileImage class="h-5 w-5 text-primary" />
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-800 truncate console-text">{{ file.name }}</p>
-            <p class="text-xs text-gray-500 console-text">{{ formatFileSize(file.size) }}</p>
+            <p class="text-sm font-medium text-foreground truncate console-text">{{ file.name }}</p>
+            <p class="text-xs text-muted-foreground mt-1 console-text">{{ formatFileSize(file.size) }}</p>
           </div>
         </div>
       </div>

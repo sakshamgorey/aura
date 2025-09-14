@@ -2,17 +2,75 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 
 export const config = {
   runtime: 'edge',
-}
-
-// Interface for Vercel's serverless function environment
-export interface VercelRequest {
-  formData: () => Promise<FormData>
+  maxDuration: 20,
 }
 
 /**
- * The core AI system prompt for visual analysis
+ * Handler that uses proper file handling without manual base64 conversion
  */
-const SYSTEM_PROMPT = `You are a 'Visual DNA Synthesizer,' an expert AI that analyzes an image and deconstructs its aesthetic essence into a prescriptive XML profile. The purpose of this XML is to serve as a detailed 'style guide' or 'preset' that another AI or a human artist could use to recreate a similar look and feel, or to apply this style to a different subject.
+export default async function handler(request: Request) {
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    })
+  }
+
+  // Check for API key
+  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
+    return new Response(JSON.stringify({ error: 'API key not configured.' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  try {
+    // Parse form data
+    const formData = await request.formData()
+    const files = formData.getAll('files') as File[]
+
+    if (files.length === 0) {
+      return new Response(JSON.stringify({ error: 'No images provided.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Take only the first file and check size (limit to 10MB for better quality)
+    const file = files[0]
+    if (file.size > 10 * 1024 * 1024) { // 10MB limit
+      return new Response(JSON.stringify({ error: 'Image too large. Please use images under 10MB.' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      })
+    }
+
+    // Initialize Google Generative AI
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+
+    // Convert file to array buffer and then to base64 properly
+    const arrayBuffer = await file.arrayBuffer()
+    const uint8Array = new Uint8Array(arrayBuffer)
+    
+    // Use a more efficient base64 conversion
+    let binary = ''
+    const chunkSize = 8192
+    
+    for (let i = 0; i < uint8Array.length; i += chunkSize) {
+      const chunk = uint8Array.slice(i, i + chunkSize)
+      binary += String.fromCharCode.apply(null, Array.from(chunk))
+    }
+    
+    const base64 = btoa(binary)
+
+    // The core AI system prompt for visual analysis
+    const SYSTEM_PROMPT = `You are a 'Visual DNA Synthesizer,' an expert AI that analyzes an image and deconstructs its aesthetic essence into a prescriptive XML profile. The purpose of this XML is to serve as a detailed 'style guide' or 'preset' that another AI or a human artist could use to recreate a similar look and feel, or to apply this style to a different subject.
 
 Your output MUST be a single, well-formed XML block and nothing else. Do not include any explanatory text, markdown formatting like \`\`\`xml, or any other content outside of the root \`<visualProfile>\` tag.
 
@@ -76,71 +134,39 @@ The XML must conform to the following schema:
 
 Your task is to analyze the provided image(s) and populate this XML structure with precise, prescriptive, and actionable values. Be specific and use professional terminology. This is not a description; it is a blueprint for creation.`
 
-/**
- * Generates a unique identifier for the image
- * @returns Unique string identifier
- */
-function generateImageId(): string {
-  return `img_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-}
-
-/**
- * Main handler for the analyze API endpoint
- * @param request - The incoming request
- * @returns Response with XML analysis or error
- */
-export default async function handler(request: VercelRequest) {
-  // Check for API key
-  if (!process.env.GOOGLE_GENERATIVE_AI_API_KEY) {
-    return new Response(JSON.stringify({ error: 'API key not configured.' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    })
-  }
-
-  try {
-    const formData = await request.formData()
-    const files = formData.getAll('files') as File[]
-
-    if (files.length === 0) {
-      return new Response(JSON.stringify({ error: 'No images provided.' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' },
-      })
+    // Prepare image part using the proper structure
+    const imagePart = {
+      inlineData: {
+        data: base64,
+        mimeType: file.type,
+      },
     }
 
-    // Initialize Google Generative AI
-    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENERATIVE_AI_API_KEY)
-    const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" })
+    // Generate response with timeout
+    const result = await Promise.race([
+      model.generateContent([SYSTEM_PROMPT, imagePart]),
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Analysis timeout')), 15000) // 15 second timeout
+      )
+    ]) as any
 
-    // Prepare image parts for the API
-    const imageParts = await Promise.all(
-      files.map(async (file) => {
-        const buffer = await file.arrayBuffer()
-        return {
-          inlineData: {
-            data: Buffer.from(buffer).toString("base64"),
-            mimeType: file.type,
-          },
-        }
-      })
-    )
-
-    // Generate analysis
-    const result = await model.generateContent([SYSTEM_PROMPT, ...imageParts])
     const response = result.response
-    const analysisXml = response.text()
+    const text = response.text()
 
-    // Return the XML analysis
-    return new Response(analysisXml, {
+    return new Response(text, {
       status: 200,
-      headers: { 'Content-Type': 'application/xml' },
+      headers: { 
+        'Content-Type': 'text/plain',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
     })
 
   } catch (error: any) {
     console.error('Analysis error:', error)
     return new Response(JSON.stringify({ 
-      error: error.message || 'Failed to analyze images.' 
+      error: error.message || 'Failed to analyze image.' 
     }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

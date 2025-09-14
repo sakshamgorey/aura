@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/analyze.ts": {
-      "runtime": "edge"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",

@@ -1,104 +1,101 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { toast } from 'vue-sonner'
 import { Loader2, Wand2 } from 'lucide-vue-next'
-import FileUpload from '@/components/FileUpload.vue'
-import AnalysisDrawer from '@/components/AnalysisDrawer.vue'
+import FileUpload from '@/components/forms/FileUpload.vue'
+import AnalysisDrawer from '@/components/layout/AnalysisDrawer.vue'
+import AppLayout from '@/components/layout/AppLayout.vue'
 import { Button, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui'
-import { APP_CONFIG, ERROR_MESSAGES, SUCCESS_MESSAGES, UI_TEXT } from '@/lib/constants'
+import { UI_TEXT } from '@/lib/constants'
+import { useFileAnalysis } from '@/composables/useFileAnalysis'
 
-// Reactive state
-const files = ref<File[]>([])
-const isLoading = ref(false)
-const analysisResult = ref<string | null>(null)
-const isDrawerOpen = ref(false)
-
-/**
- * Handles file changes from FileUpload component
- * @param newFiles - Array of selected files
- */
-const handleFilesChanged = (newFiles: File[]) => {
-  files.value = newFiles
-}
-
-/**
- * Handles the analysis process
- */
-const handleAnalyze = async () => {
-  if (files.value.length === 0) {
-    toast.error(ERROR_MESSAGES.NO_IMAGES, { 
-      description: ERROR_MESSAGES.NO_IMAGES_DESCRIPTION 
-    })
-    return
-  }
-
-  isLoading.value = true
-  analysisResult.value = null
-
-  try {
-    const formData = new FormData()
-    files.value.forEach(file => formData.append('files', file))
-
-    const response = await fetch(APP_CONFIG.API_ENDPOINT, {
-      method: 'POST',
-      body: formData
-    })
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(errorData.error || `HTTP error! Status: ${response.status}`)
-    }
-
-    const xmlData = await response.text()
-    analysisResult.value = xmlData
-    isDrawerOpen.value = true
-    
-    toast.success(SUCCESS_MESSAGES.ANALYSIS_COMPLETE, { 
-      description: SUCCESS_MESSAGES.ANALYSIS_COMPLETE_DESCRIPTION 
-    })
-
-  } catch (err: any) {
-    console.error('Analysis error:', err)
-    toast.error('Analysis Failed', { description: err.message })
-  } finally {
-    isLoading.value = false
-  }
-}
+// Use the file analysis composable
+const {
+  files,
+  isLoading,
+  analysisResult,
+  isDrawerOpen,
+  handleFilesChanged,
+  handleAnalyze
+} = useFileAnalysis()
 </script>
 
 <template>
-  <Card class="w-full max-w-2xl mx-auto">
-    <CardHeader class="text-center space-y-3">
-      <Wand2 class="mx-auto h-10 w-10 text-primary" />
-      <CardTitle class="text-3xl font-bold tracking-tight">{{ UI_TEXT.APP_TITLE }}</CardTitle>
-      <CardDescription class="max-w-md mx-auto">
-        {{ UI_TEXT.APP_DESCRIPTION }}
-      </CardDescription>
-    </CardHeader>
+  <AppLayout 
+    :title="UI_TEXT.APP_TITLE" 
+    :description="UI_TEXT.APP_DESCRIPTION"
+  >
+  
 
-    <CardContent class="space-y-8">
-      <!-- File Upload Section -->
-      <FileUpload @files-changed="handleFilesChanged" />
-
-      <!-- Action Section -->
-      <div class="flex flex-col items-center gap-4">
-        <Button 
-          @click="handleAnalyze" 
-          :disabled="isLoading || files.length === 0" 
-          size="lg" 
-          class="w-full sm:w-auto text-base px-10 py-6"
-        >
-          <Loader2 v-if="isLoading" class="mr-2 h-5 w-5 animate-spin" />
-          {{ isLoading ? UI_TEXT.ANALYZING : UI_TEXT.GENERATE_PROFILE }}
-        </Button>
-
-        <!-- Analysis Results Drawer -->
-        <AnalysisDrawer 
-          v-if="analysisResult" 
-          v-model:open="isDrawerOpen" 
-          :xml-result="analysisResult" 
-        />
+    <!-- Terminal UI Card -->
+    <div class="terminal-window animate-fade-in">
+      <!-- Terminal Header Bar -->
+      <div class="terminal-header">
+        <div class="terminal-controls">
+          <div class="terminal-button terminal-button-close"></div>
+          <div class="terminal-button terminal-button-minimize"></div>
+          <div class="terminal-button terminal-button-maximize"></div>
+        </div>
+        <div class="terminal-title console-text">
+          <span class="console-prompt">vani2@terminal:</span>~/upload-analyze
+        </div>
       </div>
-    </CardContent>
-  </Card>
+      
+      <!-- Terminal Body -->
+      <div class="terminal-body">
+        <!-- Terminal Content -->
+        <div class="terminal-content">
+          <!-- Command Line Interface -->
+          <div class="terminal-cli">
+            <div class="terminal-line">
+              <span class="console-prompt">./upload-analyze --help</span>
+            </div>
+            <div class="terminal-output">
+              <div class="console-text text-gray-700">Usage: upload-analyze [options]</div>
+              <div class="console-text text-gray-700">Select your images to generate a visual style profile</div>
+            </div>
+          </div>
+
+          <!-- File Upload Section -->
+          <div class="terminal-section">
+            <div class="terminal-line">
+              <span class="console-prompt">./upload-analyze --input</span>
+            </div>
+            <div class="terminal-upload-area">
+              <FileUpload @files-changed="(files: File[]) => handleFilesChanged(files)" />
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="terminal-section">
+            <div class="terminal-line">
+              <span class="console-prompt">./upload-analyze --execute</span>
+            </div>
+            <div class="terminal-action">
+              <Button 
+                @click="handleAnalyze" 
+                :disabled="isLoading || files.length === 0" 
+                size="lg" 
+                class="terminal-button-execute w-full sm:w-auto min-w-[240px] h-12 text-base font-medium focus-ring console-text"
+              >
+                <Loader2 v-if="isLoading" class="mr-2 h-5 w-5 animate-spin" />
+                {{ isLoading ? UI_TEXT.ANALYZING : 'Execute Analysis' }}
+              </Button>
+            </div>
+          </div>
+
+          <!-- Analysis Results -->
+          <div v-if="analysisResult" class="terminal-section">
+            <div class="terminal-line">
+              <span class="console-prompt">./upload-analyze --results</span>
+            </div>
+            <div class="terminal-results">
+              <AnalysisDrawer 
+                v-model:open="isDrawerOpen" 
+                :xml-result="analysisResult" 
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </AppLayout>
 </template>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -8,46 +8,62 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
+  
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
+  
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
+  
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 355.7 100% 97.3%;
+  
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
+  
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
+  
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
+  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+  
+    --border:240 5.9% 90%;
+    --input:240 5.9% 90%;
+    --ring:142.1 76.2% 36.3%;
     --radius: 0.5rem;
   }
-
+   
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --background:20 14.3% 4.1%;
+    --foreground:0 0% 95%;
+  
+    --card:24 9.8% 10%;
+    --card-foreground:0 0% 95%;
+  
+    --popover:0 0% 9%;
+    --popover-foreground:0 0% 95%;
+  
+    --primary:142.1 70.6% 45.3%;
+    --primary-foreground:144.9 80.4% 10%;
+  
+    --secondary:240 3.7% 15.9%;
+    --secondary-foreground:0 0% 98%;
+  
+    --muted:0 0% 15%;
+    --muted-foreground:240 5% 64.9%;
+  
+    --accent:12 6.5% 15.1%;
+    --accent-foreground:0 0% 98%;
+  
+    --destructive:0 62.8% 30.6%;
+    --destructive-foreground:0 85.7% 97.3%;
+  
+    --border:240 3.7% 15.9%;
+    --input:240 3.7% 15.9%;
+    --ring:142.4 71.8% 29.2%;
   }
 }
 
@@ -55,8 +71,36 @@
   * {
     @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    font-variation-settings: normal;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.025em;
+    background-color: #ffffff !important;
+  }
+  
+  html {
+    background-color: #ffffff !important;
+  }
+  
+  /* Typography scale */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.025em;
+  }
+  
+  /* Code and monospace elements */
+  code, pre, .font-mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+    letter-spacing: 0.025em;
   }
 }
 
@@ -105,4 +149,252 @@
 .focus-visible\:ring-offset-2:focus-visible {
   --tw-ring-offset-width: 2px;
   --tw-ring-offset-color: #18181b;
+}
+
+/* Enhanced spacing system */
+.minimal-container {
+  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12;
+}
+
+.minimal-card {
+  @apply bg-card border border-border rounded-xl shadow-sm;
+}
+
+.minimal-spacing {
+  @apply space-y-8 sm:space-y-10 lg:space-y-12;
+}
+
+.minimal-spacing-sm {
+  @apply space-y-4 sm:space-y-6;
+}
+
+.minimal-spacing-lg {
+  @apply space-y-12 sm:space-y-16 lg:space-y-20;
+}
+
+/* Enhanced typography spacing */
+.text-spacing {
+  @apply leading-relaxed;
+}
+
+.text-spacing-tight {
+  @apply leading-tight;
+}
+
+.text-spacing-loose {
+  @apply leading-loose;
+}
+
+/* Improved section spacing */
+.section-spacing {
+  @apply py-12 sm:py-16 lg:py-20;
+}
+
+.section-spacing-sm {
+  @apply py-8 sm:py-12;
+}
+
+.section-spacing-lg {
+  @apply py-16 sm:py-20 lg:py-24;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 640px) {
+  .minimal-container {
+    @apply px-4;
+  }
+  
+  .minimal-spacing {
+    @apply space-y-6;
+  }
+  
+  .minimal-spacing-sm {
+    @apply space-y-3;
+  }
+  
+  .minimal-spacing-lg {
+    @apply space-y-8;
+  }
+  
+  .section-spacing {
+    @apply py-8;
+  }
+  
+  .section-spacing-sm {
+    @apply py-6;
+  }
+  
+  .section-spacing-lg {
+    @apply py-12;
+  }
+}
+
+/* Console-style typography */
+.text-balance {
+  text-wrap: balance;
+}
+
+.console-text {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+  letter-spacing: 0.05em;
+  font-weight: 400;
+  color: #374151;
+}
+
+.console-heading {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'Roboto Mono', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', monospace;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.console-accent {
+  color: hsl(var(--primary));
+  font-weight: 500;
+}
+
+/* Terminal-style effects */
+.terminal-glow {
+  text-shadow: 0 0 10px hsl(var(--primary) / 0.3);
+}
+
+.console-prompt::before {
+  content: '$ ';
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+.console-prompt {
+  color: hsl(var(--primary));
+  font-weight: 600;
+}
+
+.console-output {
+  color: hsl(var(--muted-foreground));
+  font-style: italic;
+}
+
+/* Better focus states for accessibility */
+.focus-ring {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+}
+
+/* Smooth animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Terminal UI Styles */
+.terminal-window {
+  @apply bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.terminal-header {
+  @apply bg-gray-600 px-4 py-3 flex items-center justify-between;
+  border-bottom: 1px solid #4b5563;
+}
+
+.terminal-controls {
+  @apply flex space-x-2;
+}
+
+.terminal-button {
+  @apply w-3 h-3 rounded-full;
+}
+
+.terminal-button-close {
+  @apply bg-red-500;
+}
+
+.terminal-button-minimize {
+  @apply bg-yellow-500;
+}
+
+.terminal-button-maximize {
+  @apply bg-green-500;
+}
+
+.terminal-title {
+  @apply text-white text-sm font-medium;
+  color: #e5e7eb;
+}
+
+.terminal-body {
+  @apply bg-gray-50 p-6;
+  min-height: 400px;
+}
+
+.terminal-content {
+  @apply space-y-6;
+}
+
+.terminal-cli {
+  @apply space-y-2;
+}
+
+.terminal-line {
+  @apply flex items-center space-x-2;
+}
+
+.terminal-output {
+  @apply ml-4 space-y-1;
+}
+
+.terminal-section {
+  @apply space-y-4;
+}
+
+.terminal-upload-area {
+  @apply ml-4;
+}
+
+.terminal-action {
+  @apply ml-4;
+}
+
+.terminal-results {
+  @apply ml-4;
+}
+
+.terminal-button-execute {
+  @apply bg-gray-800 hover:bg-gray-700 text-white border-gray-600;
+}
+
+.terminal-button-execute:disabled {
+  @apply bg-gray-400 text-gray-200 cursor-not-allowed;
+}
+
+.terminal-button-execute:disabled:hover {
+  @apply bg-gray-400;
+}
+
+/* Terminal Upload Card Styling */
+.terminal-upload-card {
+  @apply bg-gray-800 border-gray-600;
+}
+
+.terminal-upload-card:hover {
+  @apply border-primary/50;
+}
+
+/* White Upload Card Styling */
+.white-upload-card {
+  @apply bg-white border-gray-300;
+}
+
+.white-upload-card:hover {
+  @apply border-primary/50;
 }

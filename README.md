@@ -1,4 +1,4 @@
-# Aura - AI Image Profiler
+# Find Aura - AI Image Profiler
 
 A minimalist Vue.js 3 application that analyzes images and generates prescriptive XML style profiles using Google's Gemini Pro Vision API.
 
@@ -37,7 +37,7 @@ A minimalist Vue.js 3 application that analyzes images and generates prescriptiv
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd aura
+cd find-aura
 ```
 
 2. Install dependencies:
