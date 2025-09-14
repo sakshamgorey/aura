@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/analyze.ts": {
+      "runtime": "edge"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
