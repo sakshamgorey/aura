@@ -37,7 +37,7 @@ A minimalist Vue.js 3 application that analyzes images and generates prescriptiv
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd aura-vue-minimalist
+cd aura
 ```
 
 2. Install dependencies:
